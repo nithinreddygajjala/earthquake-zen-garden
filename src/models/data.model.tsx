@@ -10,7 +10,7 @@ class Geometry {
  type: string;
 }
 
-class Property {
+export class Property {
     alert: string;
     cdi: Number;
     code: string;

@@ -1,14 +1,14 @@
 import  React,  { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSort, faSortDown, faSortUp } from '@fortawesome/free-solid-svg-icons'
-
+import { Property } from './models/data.model';
 import { HashRouter as Router, Switch, Route, Link, useParams, useLocation } from "react-router-dom";
 import './App.css';
 import Navigation from './components/navbar.component';
 import data from './Data';
 import { Col, Container, Row } from 'react-bootstrap';
+import dateTimeFormatter from './components/datetimeformatter.component';
 const App = () => {
-	console.log(data);
 	const [state, setState] = useState(data);
 	
   return (
@@ -23,55 +23,55 @@ const App = () => {
 		  <Route path="/profile" render={(props) => {return <ProfileDetails data= {data.profile}/>}}></Route>
           {/* <Route path="/profile/:userId" component={ProfileDetails}>
           </Route> */}
-          <Route path="/" component={Home}>
+          <Route path="/" render={(props) => {return <Home data= {data.data}/>}}>
           </Route>
     </Switch>
     </Router>
   )
 }
 
-const tableData = [
-  {
-		name: 'Amancio Ortega',
-		net_worth: 62.7
-	},
-	{
-		name: 'Bernard Arnault',
-		net_worth: 76
-	},
-	{
-		name: 'Bill Gates',
-		net_worth: 96.5
-	},
-	{
-		name: 'Carlos Sim Helu',
-		net_worth: 64
-	},
-	{
-		name: 'Jeff Bezos',
-		net_worth: 131
-	},
-	{
-		name: 'Larry Ellison',
-		net_worth: 58
-	},
-	{
-		name: 'Larry Page',
-		net_worth: 50.8
-	},
-	{
-		name: 'Mark Zuckerberg',
-		net_worth: 62.3
-	},
-	{
-		name: 'Michael Bloomberg',
-		net_worth: 55.5
-	},
-	{
-		name: 'Warren Buffet',
-		net_worth: 82.5
-	}
-];
+// const tableData = [
+//   {
+// 		name: 'Amancio Ortega',
+// 		net_worth: 62.7
+// 	},
+// 	{
+// 		name: 'Bernard Arnault',
+// 		net_worth: 76
+// 	},
+// 	{
+// 		name: 'Bill Gates',
+// 		net_worth: 96.5
+// 	},
+// 	{
+// 		name: 'Carlos Sim Helu',
+// 		net_worth: 64
+// 	},
+// 	{
+// 		name: 'Jeff Bezos',
+// 		net_worth: 131
+// 	},
+// 	{
+// 		name: 'Larry Ellison',
+// 		net_worth: 58
+// 	},
+// 	{
+// 		name: 'Larry Page',
+// 		net_worth: 50.8
+// 	},
+// 	{
+// 		name: 'Mark Zuckerberg',
+// 		net_worth: 62.3
+// 	},
+// 	{
+// 		name: 'Michael Bloomberg',
+// 		net_worth: 55.5
+// 	},
+// 	{
+// 		name: 'Warren Buffet',
+// 		net_worth: 82.5
+// 	}
+// ];
 
 class types {
 firstname: String;
@@ -96,7 +96,6 @@ function Profile() {
 }
 
 function ProfileDetails({ data }) {
-	console.log(data);
   return (<span>
 	<Container fluid>
 		  <Row className="mr-4 mt-4">
@@ -137,36 +136,79 @@ function ProfileDetails({ data }) {
 const sortTypes = {
 	up: {
 		class: faSortUp,
-		fn: (a: { net_worth: number; }, b: { net_worth: number; }) => a.net_worth - b.net_worth
+		fn: (a, b) => a.properties.time - b.properties.time
 	},
 	down: {
 		class: faSortDown,
-		fn: (a: { net_worth: number; }, b: { net_worth: number; }) => b.net_worth - a.net_worth
+		fn: (a, b) => b.properties.time - a.properties.time
 	},
 	default: {
 		class: faSort,
-		fn: (a: any, b: any) => a
+		fn: (a: any, b: any) => a.properties.time
+	}
+};
+
+const getSortMethod = (columnName, sortDirection) => {
+	if(sortDirection == "up") {
+		//return (a : Property, b: Property) => a.properties.time - b.properties.time
+
+	} else if (sortDirection == "down") {
+
+	} else {
+
+	}
+};
+
+const sortColumns = (state) => {
+	console.log(state);
+	if(state.columnName == "titleColumn") {
+		if(state.sortDirection == "up") {
+			return (a, b) => a.properties.title.split('-')[1] - b.properties.title.split('-')[1] ;
+		} else if(state.sortDirection == "down") {
+			return (a, b) => b.properties.title.split('-')[1] - a.properties.title.split('-')[1] ;
+		} else {
+			return (a,b) => a.properties.title.split('-')[1]
+		}
+	} else if (state.columnName == "magnitudeColumn") {
+		if(state.sortDirection == "up") {
+			return (a, b) => a.properties.mag - b.properties.mag ;
+		} else if(state.sortDirection == "down") {
+			return (a, b) => b.properties.mag + a.properties.mag ;
+		} else {
+			return (a,b) => a.properties.mag;
+		}
+	} else {
+		if(state.sortDirection == "up") {
+			//return (a, b) => new Date(a.properties.time).toISOString() - new Date(b.properties.time).toISOString() ;
+		} else if(state.sortDirection == "down") {
+			return (a, b) => new Date(a.properties.time) < new Date(b.properties.time) ;
+		} else {
+			return (a,b) => new Date(a.properties.time);
+		}
 	}
 };
 
 
 
-function Home() {
+function Home({data}) {
+	let tableData = data.features;
   const [state, setState] = useState({
-    currentSort: 'default'
+    columnName: null,
+	sortDirection: 'default'
   });
 
-  const onSortChange = () => {
-		const { currentSort } = state;
-		let nextSort: string;
+  const onSortChange = (columnNameFromUI) => {
+		let columnComponentState = state;
 
-		if (currentSort === 'down') nextSort = 'up';
-		else if (currentSort === 'up') nextSort = 'default';
-		else if (currentSort === 'default') nextSort = 'down';
+		if (columnComponentState.sortDirection === 'down') columnComponentState.sortDirection = 'up';
+		else if (columnComponentState.sortDirection === 'up') columnComponentState.sortDirection = 'down';
+		else if (columnComponentState.sortDirection === 'default') columnComponentState.sortDirection = 'down';
+		columnComponentState.columnName = columnNameFromUI;
 
 		setState({
-			currentSort: nextSort
-		});
+			columnName: columnComponentState.columnName,
+			sortDirection: columnComponentState.sortDirection 
+  		});
 	};
 
   return (
@@ -176,21 +218,36 @@ function Home() {
 		  <table >
 			  <thead>
 				  <tr>
-					  <th>Name</th>
+					  <th>Title
+					  <button onClick={() => {onSortChange("title")}}>
+							  <FontAwesomeIcon icon={state.columnName === "title" ? sortTypes[state.sortDirection].class : sortTypes["default"].class } />
+						  </button>
+					  </th>
 					  <th>
-						  Net Worth
-                <button onClick={onSortChange}>
-							  <FontAwesomeIcon icon={sortTypes[state.currentSort].class} />
-
+						  Magnitude
+                <button  onClick={() => {onSortChange("mag")}}>
+				<FontAwesomeIcon icon={state.columnName === "mag" ? sortTypes[state.sortDirection].class : sortTypes["default"].class } />
+						  </button>
+					  </th>
+					  <th>Time
+					  <button  onClick={() => {onSortChange("time")}}>
+					  <FontAwesomeIcon icon={state.columnName === "time" ? sortTypes[state.sortDirection].class : sortTypes["default"].class } />
 						  </button>
 					  </th>
 				  </tr>
 			  </thead>
 			  <tbody>
-				  {[...tableData].sort(sortTypes[state.currentSort].fn).map(p => (
+				  {/* {[...tableData].sort(sortTypes[state.currentSort].fn).map(p => (
 					  <tr>
 						  <td>{p.name}</td>
 						  <td>${p.net_worth}b</td>
+					  </tr>
+				  ))} */}
+				  {[...tableData].sort(sortTypes[state.sortDirection].fn).map(p => (
+					  <tr>
+						  <td>{p.properties.title.split('-')[1]}</td>
+						  <td>{p.properties.mag}</td>
+						  <td>{dateTimeFormatter(p.properties.time)}</td>
 					  </tr>
 				  ))}
 			  </tbody>
