@@ -7,25 +7,25 @@ const htmlPlugin = new HtmlWebpackPlugin({
 })
 
 module.exports = {
-  entry: "./src",
+  entry: "./src/index.tsx",
   output: {
     path: path.resolve(__dirname, "public"),
     filename: "bundle.js",
   },
   module: {
-    rules: [
-      {
-        test: /\.(js|jsx)/,
-        exclude: /node_modules/,
-        use: ["babel-loader"],
-      },
-    ],
+    rules: [{ test: /\.tsx?$/, loader: 'awesome-typescript-loader' },
+    {
+        test: /\.css$/,
+        use: [
+            { loader: 'style-loader' },
+            { loader: 'css-loader' },
+            { loader: 'less-loader' }
+        ]
+    }],
   },
   devServer: {
     historyApiFallback: true,
 },
-  resolve: {
-    extensions: ["*", ".js", ".jsx"],
-  },
+resolve: {extensions: ['.js', '.jsx', '.react.js', '.ts', '.tsx']}, 
   plugins: [htmlPlugin]
 };
