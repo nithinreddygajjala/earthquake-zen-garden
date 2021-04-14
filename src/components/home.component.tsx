@@ -1,5 +1,5 @@
-import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import React, { useState } from "react";
 import sortTypes from "../constants/constants";
 import getSortMethod from "../utilities/sortutility";
 import { Container, Row, Col } from "react-bootstrap";
@@ -8,19 +8,22 @@ import dateTimeFormatter from "../utilities/datetimeformatterutility";
 
 const HomeComponent = ({ data }) => {
 	let tableData = data.features;
+	{/* Initially in state, column is set to null and sortDirection is set to default. They get populated when user clicks on sort icons on columns */}
 	const [state, setState] = useState({
 		columnName: null,
 		sortDirection: 'default'
 	});
 
-	const onSortChange = (columnNameFromUI) => {
+	const onSortChange = (columnNameFromGrid) => {
 		let columnComponentState = state;
 
 		if (columnComponentState.sortDirection === 'down') columnComponentState.sortDirection = 'up';
 		else if (columnComponentState.sortDirection === 'up') columnComponentState.sortDirection = 'down';
 		else if (columnComponentState.sortDirection === 'default') columnComponentState.sortDirection = 'down';
 
-		columnComponentState.columnName = columnNameFromUI;
+		columnComponentState.columnName = columnNameFromGrid;
+
+		{/*The state will be updated with new columnName and SortDirection Properties with setState Hook*/ }
 		setState({
 			columnName: columnComponentState.columnName,
 			sortDirection: columnComponentState.sortDirection
@@ -56,10 +59,12 @@ const HomeComponent = ({ data }) => {
 							</tr>
 						</thead>
 						<tbody>
+							{/* getSortMethod returns sort callback to be used on specified column */}
 							{tableData.sort(getSortMethod(state.columnName, state.sortDirection)).map(item => (
 								<tr key={item.id}>
 									<td className="pr-2 py-1"><Link to={`/details/${item.id}`}>{item.properties.place}</Link></td>
 									<td className="pr-4 py-1 text-center">{item.properties.mag}</td>
+									{/*DateTimeFormatter used for formatting date to  month  day year hours minutes amOrPm format */}
 									<td className="pl-4 py-1">{dateTimeFormatter(item.properties.time)}</td>
 								</tr>
 							))}

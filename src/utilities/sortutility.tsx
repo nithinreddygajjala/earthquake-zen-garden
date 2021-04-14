@@ -3,6 +3,7 @@ import { Feature } from "../models/datacontract.model";
 const getSortMethod = (columnName, sortDirection) => {
 	if (sortDirection === "up") {
 		return (a: Feature, b: Feature) => {
+			{/* using string localeCompare method on place column */}
 			if (columnName === 'place')
 				return a.properties[columnName].localeCompare(b.properties[columnName])
 			else {
@@ -11,6 +12,7 @@ const getSortMethod = (columnName, sortDirection) => {
 		};
 	} else if (sortDirection === "down") {
 		return (a: Feature, b: Feature) => {
+			{/* using string localeCompare method on place column */}
 			if (columnName === 'place')
 				return b.properties[columnName].localeCompare(a.properties[columnName])
 			else {

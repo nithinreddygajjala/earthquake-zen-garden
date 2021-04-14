@@ -10,6 +10,15 @@ class Geometry {
  type: string;
 }
 
+class Metadata {
+    api: string;
+    count: Number;
+    generated: Number;
+    status: Number;
+    title: string;
+    url: string;
+}
+
 export class Property {
     alert: string;
     cdi: Number;
@@ -44,15 +53,6 @@ export class Feature {
     geometry: Geometry;
     id: string;
     properties: Property;
-}
-
-class Metadata {
-    api: string;
-    count: Number;
-    generated: Number;
-    status: Number;
-    title: string;
-    url: string;
 }
 
 export default DataContract;

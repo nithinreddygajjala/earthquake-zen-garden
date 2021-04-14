@@ -7,6 +7,7 @@ interface IState {
     id: string;
 }
 
+{/* using React Class Component */}
 class EarthQuakeDetailsComponent extends React.PureComponent<IState> {
     state: IState;
     constructor(props) {

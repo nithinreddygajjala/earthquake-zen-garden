@@ -7,6 +7,7 @@ h2 {
     color: #777777 !important;
 }
 
+/* setting color for all previously visited links */
 a:visited {
     color: 6600cc !important;
   }

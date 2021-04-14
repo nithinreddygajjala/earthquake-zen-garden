@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { HashRouter as Router, Switch, Route, Link } from "react-router-dom";
 import './App.css';
-import Navigation from './components/navbar.component';
 import data from './datasource';
-import EarthQuakeDetailsComponent from './components/earthquakedetails.component';
-import ProfileDetailsComponent from './components/profiledetails.component';
+import React, { useState } from 'react';
+import Navigation from './components/navbar.component';
 import HomeComponent from './components/home.component';
+import ProfileDetailsComponent from './components/profiledetails.component';
+import { HashRouter as Router, Switch, Route, Link } from "react-router-dom";
+import EarthQuakeDetailsComponent from './components/earthquakedetails.component';
+
 const App = () => {
 	const [state, setState] = useState(data);
 	return (
