@@ -1,9 +1,9 @@
 import Profile from "./profile.model";
 import Site from "./site.model";
-import Data from "./data.model";
+import DataContract from "./datacontract.model";
 
 class JSONData {
-    data: Data;
+    data: DataContract;
     profile: Profile;
     site: Site;
 }

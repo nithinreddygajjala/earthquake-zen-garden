@@ -2,3 +2,15 @@
     height: 200px;
     width: 200px;
 }
+
+h2 {
+    color: #777777 !important;
+}
+
+a:visited {
+    color: 6600cc !important;
+  }
+
+* {
+    font-family: sans-serif;
+}

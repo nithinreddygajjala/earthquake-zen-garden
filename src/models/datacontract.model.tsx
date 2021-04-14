@@ -1,4 +1,4 @@
-class Data {
+class DataContract {
     bbox: Array<Number>;
     features: Array<Feature>;
     metadata: Metadata;
@@ -39,7 +39,7 @@ export class Property {
     url: string;
 }
 
-class Feature {
+export class Feature {
     type: string;
     geometry: Geometry;
     id: string;
@@ -55,4 +55,4 @@ class Metadata {
     url: string;
 }
 
-export default Data;
+export default DataContract;
