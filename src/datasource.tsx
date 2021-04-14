@@ -1,4 +1,5 @@
 import  JSONData  from './models/jsondata.model';
+
 const data: JSONData = {
     "site": {
       "title": "Earthquake Zen Garden",

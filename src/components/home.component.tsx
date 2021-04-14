@@ -1,10 +1,10 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
-import { Container, Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import sortTypes from "../constants/constants";
-import dateTimeFormatter from "../utilities/datetimeformatterutility";
 import getSortMethod from "../utilities/sortutility";
+import { Container, Row, Col } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import dateTimeFormatter from "../utilities/datetimeformatterutility";
 
 const HomeComponent = ({ data }) => {
 	let tableData = data.features;

@@ -1,6 +1,6 @@
-import { Navbar, Nav } from 'react-bootstrap';
 import  React from 'react';
 import { Link } from 'react-router-dom';
+import { Navbar, Nav } from 'react-bootstrap';
 
 import './navbar.component.css';
 const Navigation = ({Data}) => {
